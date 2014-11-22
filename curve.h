@@ -28,6 +28,7 @@ public:
     int segments;
     QStack <QVector <QPoint> > curves;
     QVector <QPoint> temp;
+    QVector <QPointF> m;
     bool drawCurve;
 
 private:
@@ -36,6 +37,7 @@ private:
 protected:
     void paintEvent(QPaintEvent*);
     void mousePressEvent(QMouseEvent *e);
+    QPointF splain(double x, QPointF Pk, QPointF Pk1, QPointF Mk, QPointF Mk1);
 private slots:
     void on_exit_clicked();
     void on_colour_change_currentTextChanged(const QString &arg1);
