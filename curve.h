@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPen>
+#include <QStyle>
 
 namespace Ui {
 class Curve;
@@ -22,6 +23,9 @@ public:
     ~Curve();
 
     QString colour;
+    QString style;
+    int width;
+    int segments;
     QStack <QVector <QPoint> > curves;
     QVector <QPoint> temp;
     bool drawCurve;
@@ -35,6 +39,12 @@ protected:
 private slots:
     void on_exit_clicked();
     void on_colour_change_currentTextChanged(const QString &arg1);
+    void on_style_change_currentTextChanged(const QString &arg1);
+    void on_segments_valueChanged(int arg1);
+    void on_width_valueChanged(int arg1);
+    void on_add_curve_clicked();
+    void on_delete_last_clicked();
+    void on_delete_all_clicked();
 };
 
 #endif // CURVE_H

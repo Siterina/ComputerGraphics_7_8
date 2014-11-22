@@ -58,7 +58,14 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QSpinBox" name="segments"/>
+      <widget class="QSpinBox" name="segments">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_2">
@@ -95,7 +102,14 @@
       </widget>
      </item>
      <item row="4" column="0">
-      <widget class="QSpinBox" name="width"/>
+      <widget class="QSpinBox" name="width">
+       <property name="maximum">
+        <number>10</number>
+       </property>
+       <property name="value">
+        <number>1</number>
+       </property>
+      </widget>
      </item>
      <item row="12" column="0">
       <widget class="QPushButton" name="delete_all">
@@ -139,7 +153,28 @@
       </widget>
      </item>
      <item row="9" column="0">
-      <widget class="QComboBox" name="style_change"/>
+      <widget class="QComboBox" name="style_change">
+       <item>
+        <property name="text">
+         <string>SolidLine</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>DashLine</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>DotLine</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>DashDotLine</string>
+        </property>
+       </item>
+      </widget>
      </item>
     </layout>
    </item>
