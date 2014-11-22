@@ -24,12 +24,13 @@ public:
 
     QString colour;
     QString style;
-    int width;
+    int penWidth;
     int segments;
     QStack <QVector <QPoint> > curves;
     QVector <QPoint> temp;
     QVector <QPointF> m;
     bool drawCurve;
+    int h, w;
 
 private:
     Ui::Curve *ui;

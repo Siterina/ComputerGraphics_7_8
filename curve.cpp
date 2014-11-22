@@ -7,7 +7,8 @@ Curve::Curve(QWidget *parent) :
     drawCurve(false),
     style("SolidLine"),
     colour("black"),
-    width(1),segments(1),
+    penWidth(1),segments(1),
+    h(height()), w(width()),
 
     ui(new Ui::Curve)
 {
@@ -47,18 +48,23 @@ QPointF Curve::splain(double x, QPointF Pk, QPointF Pk1, QPointF Mk, QPointF Mk1
 
 
 void Curve::paintEvent(QPaintEvent*) {
+
+   // double Ky = h / height();
+    //double Kx = w / width();
+    //double K = std::min(Kx, Ky);
+
     QPainter painter(this);
     painter.setPen(QPen(Qt::black, 5));
 
 
     for(int i = 0; i < temp.size(); i++) {
-        painter.drawPoint(temp[i]);
+        painter.drawPoint( temp[i]);
     }
 
 
     QPen penCurve;
     changeStyle(style, penCurve);
-    penCurve.setWidth(width);
+    penCurve.setWidth(penWidth);
     penCurve.setColor(colour);
     painter.setPen(penCurve);
     if(curves.size()) {
@@ -68,24 +74,31 @@ void Curve::paintEvent(QPaintEvent*) {
             }
             for(int j = 0; j <= curves[i].size() - 1; j++) { // count differential vector
                 if(j == 0)
-                    m.push_back((curves[i][j+1] - curves[i][j]) / (curves[i][j+1].x() - curves[i][j].x()));
+                    m.push_back((curves[i][j+1] - curves[i][j]) / 2 /(curves[i][j+1].x() - curves[i][j].x()));
                 else if(j == curves[i].size() - 1)
-                    m.push_back((curves[i][j] - curves[i][j-1]) / (curves[i][j].x() - curves[i][j-1].x()));
+                    m.push_back((curves[i][j] - curves[i][j-1]) / 2 /(curves[i][j].x() - curves[i][j-1].x()));
                 else
                     m.push_back((curves[i][j+1] - curves[i][j-1]) / (curves[i][j+1].x() - curves[i][j-1].x()));
 
             }
             for(int j = 0; j < curves[i].size() - 1; j++) { // draw curve
-                double step = 0.1;
+                double step = 0.05;
                 QPointF prev, next;
                 prev.setX(curves[i][j].x());
                 prev.setY(curves[i][j].y());
 
-                for(double x = curves[i][j].x(); x < curves[i][j+1].x() + step; x+=step) {
-                    next = splain(x, curves[i][j], curves[i][j+1], m[j], m[j+1]);
-                    painter.drawLine(prev, next);
-                    prev = next;
-                }
+                if(curves[i][j].x() < curves[i][j+1].x())
+                    for(double x = curves[i][j].x(); x < curves[i][j+1].x() + step; x+=step) {
+                        next = splain(x, curves[i][j], curves[i][j+1], m[j], m[j+1]);
+                        painter.drawLine(prev, next);
+                        prev = next;
+                    }
+                else
+                    for(double x = curves[i][j].x(); x > curves[i][j+1].x() - step; x-=step) {
+                        next = splain(x, curves[i][j], curves[i][j+1], m[j], m[j+1]);
+                        painter.drawLine(prev, next);
+                        prev = next;
+                    }
             }
 
             m.clear();
@@ -135,7 +148,7 @@ void Curve::on_segments_valueChanged(int arg1) {
 }
 
 void Curve::on_width_valueChanged(int arg1) {
-    width = arg1;
+    penWidth = arg1;
     repaint();
 }
 
