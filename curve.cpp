@@ -1,5 +1,8 @@
 #include "curve.h"
 #include "ui_curve.h"
+#include "nmatrix.h"
+#include <QDebug>
+
 
 Curve::Curve(QWidget *parent) :
     QWidget(parent),
@@ -9,6 +12,7 @@ Curve::Curve(QWidget *parent) :
     colour("black"),
     penWidth(1),segments(1),
     h(height()), w(width()),
+    cycle(false), alpha(2 * 3.1415),
 
     ui(new Ui::Curve)
 {
@@ -20,17 +24,17 @@ Curve::~Curve()
     delete ui;
 }
 
-void changeStyle(QString style, QPen pen) {
+//void changeStyle(QString style, QPen pen) {
 
-    if(style == "SolidLine")
-        pen.setStyle(Qt::SolidLine);
-    if(style == "DashLine")
-        pen.setStyle(Qt::DashLine);
-    if(style == "DotLine")
-        pen.setStyle(Qt::DotLine);
-    if(style == "DashDotLine")
-        pen.setStyle(Qt::DashDotLine);
-}
+//    if(style == "SolidLine")
+//        pen.setStyle(Qt::SolidLine);
+//    if(style == "DashLine")
+//        pen.setStyle(Qt::DashLine);
+//    if(style == "DotLine")
+//        pen.setStyle(Qt::DotLine);
+//    if(style == "DashDotLine")
+//        pen.setStyle(Qt::DashDotLine);
+//}
 
 
 QPointF Curve::splain(double x, QPointF Pk, QPointF Pk1, QPointF Mk, QPointF Mk1) {
@@ -58,30 +62,44 @@ void Curve::paintEvent(QPaintEvent*) {
 
 
     for(int i = 0; i < temp.size(); i++) {
-        painter.drawPoint( temp[i]);
+        painter.drawPoint( temp[i] );
     }
+
+    NMatrix toRotate = NMatrix();
+    toRotate.Rotate(alpha);
 
 
     QPen penCurve;
-    changeStyle(style, penCurve);
+    //changeStyle(style, penCurve);
     penCurve.setWidth(penWidth);
     penCurve.setColor(colour);
     painter.setPen(penCurve);
     if(curves.size()) {
         for(int i = 0; i < curves.size(); i++) {
+            if(cycle)
+                curves[i].push_back(curves[i][0]);
             for(int j = 0; j < curves[i].size(); j++) { // draw points
-                painter.drawPoint(curves[i][j]);
+                //curves[i][j] = toRotate * curves[i][j];
+                painter.drawPoint(toRotate * curves[i][j]);
+                qDebug() << toRotate.data[0][0]
+                        << toRotate.data[0][1]
+                        << toRotate.data[1][0]
+                        << toRotate.data[1][1]
+                        << curves[i][j].x()
+                        << curves[i][j].y()
+                        << curves[i].size();
+
             }
             for(int j = 0; j <= curves[i].size() - 1; j++) { // count differential vector
                 if(j == 0)
-                    m.push_back((curves[i][j+1] - curves[i][j]) / 2 /(curves[i][j+1].x() - curves[i][j].x()));
+                    m.push_back((curves[i][j+1] - curves[i][j]) / (curves[i][j+1].x() - curves[i][j].x()));
                 else if(j == curves[i].size() - 1)
-                    m.push_back((curves[i][j] - curves[i][j-1]) / 2 /(curves[i][j].x() - curves[i][j-1].x()));
+                    m.push_back((curves[i][j] - curves[i][j-1]) / (curves[i][j].x() - curves[i][j-1].x()));
                 else
                     m.push_back((curves[i][j+1] - curves[i][j-1]) / (curves[i][j+1].x() - curves[i][j-1].x()));
 
             }
-            for(int j = 0; j < curves[i].size() - 1; j++) { // draw curve
+          /*  for(int j = 0; j < curves[i].size() - 1; j++) { // draw curve
                 double step = 0.05;
                 QPointF prev, next;
                 prev.setX(curves[i][j].x());
@@ -91,17 +109,21 @@ void Curve::paintEvent(QPaintEvent*) {
                     for(double x = curves[i][j].x(); x < curves[i][j+1].x() + step; x+=step) {
                         next = splain(x, curves[i][j], curves[i][j+1], m[j], m[j+1]);
                         painter.drawLine(prev, next);
+                        painter.drawLine(toRotate * prev, toRotate * next);
                         prev = next;
                     }
-                else
+                else {
                     for(double x = curves[i][j].x(); x > curves[i][j+1].x() - step; x-=step) {
                         next = splain(x, curves[i][j], curves[i][j+1], m[j], m[j+1]);
                         painter.drawLine(prev, next);
                         prev = next;
                     }
-            }
+                }
+            } */
 
             m.clear();
+            if(cycle)
+                curves[i].pop_back();
         }
     }
 
@@ -138,10 +160,10 @@ void Curve::on_colour_change_currentTextChanged(const QString &arg1) {
     repaint();
 }
 
-void Curve::on_style_change_currentTextChanged(const QString &arg1) {
-    style = arg1;
-    repaint();
-}
+//void Curve::on_style_change_currentTextChanged(const QString &arg1) {
+//   style = arg1;
+//   repaint();
+//}
 
 void Curve::on_segments_valueChanged(int arg1) {
     segments = arg1;
@@ -168,5 +190,12 @@ void Curve::on_delete_last_clicked() {
 
 void Curve::on_delete_all_clicked() {
     curves.clear();
+    repaint();
+}
+
+void Curve::on_cycleBox_toggled(bool checked) {
+    if (checked)
+        cycle = true;
+    else cycle = false;
     repaint();
 }

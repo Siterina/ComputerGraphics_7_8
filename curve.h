@@ -26,11 +26,13 @@ public:
     QString style;
     int penWidth;
     int segments;
-    QStack <QVector <QPoint> > curves;
-    QVector <QPoint> temp;
+    QStack <QVector <QPointF> > curves;
+    QVector <QPointF> temp;
     QVector <QPointF> m;
     bool drawCurve;
     int h, w;
+    bool cycle;
+    double alpha;
 
 private:
     Ui::Curve *ui;
@@ -42,12 +44,13 @@ protected:
 private slots:
     void on_exit_clicked();
     void on_colour_change_currentTextChanged(const QString &arg1);
-    void on_style_change_currentTextChanged(const QString &arg1);
+    //void on_style_change_currentTextChanged(const QString &arg1);
     void on_segments_valueChanged(int arg1);
     void on_width_valueChanged(int arg1);
     void on_add_curve_clicked();
     void on_delete_last_clicked();
     void on_delete_all_clicked();
+    void on_cycleBox_toggled(bool checked);
 };
 
 #endif // CURVE_H
