@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        curve.cpp
+        curve.cpp \
+    nmatrix.cpp
 
-HEADERS  += curve.h
+HEADERS  += curve.h \
+    nmatrix.h
 
 FORMS    += curve.ui
