@@ -2,7 +2,10 @@
 #include "ui_curve.h"
 #include "nmatrix.h"
 #include <QDebug>
+<<<<<<< HEAD
 #define pi 3.1415
+=======
+>>>>>>> origin/master
 
 
 Curve::Curve(QWidget *parent) :
@@ -13,9 +16,13 @@ Curve::Curve(QWidget *parent) :
     colour("black"),
     penWidth(1),segments(1),
     h(height()), w(width()),
+<<<<<<< HEAD
     cycle(false), alpha(0),
     max_x(0), max_y(0),
     min_x(10000), min_y(10000),
+=======
+    cycle(false), alpha(2 * 3.1415),
+>>>>>>> origin/master
 
     ui(new Ui::Curve)
 {
@@ -81,6 +88,7 @@ void Curve::paintEvent(QPaintEvent*) {
         for(int i = 0; i < curves.size(); i++) {
             if(cycle)
                 curves[i].push_back(curves[i][0]);
+<<<<<<< HEAD
            /* for(int j = 0; j < curves[i].size(); j++) { // draw points
                 curves[i][j].setX(curves[i][j].x() - max_x / 2.0);
                 curves[i][j].setY(curves[i][j].y() - max_y / 2.0);
@@ -91,6 +99,20 @@ void Curve::paintEvent(QPaintEvent*) {
             }*/
 
 
+=======
+            for(int j = 0; j < curves[i].size(); j++) { // draw points
+                //curves[i][j] = toRotate * curves[i][j];
+                painter.drawPoint(toRotate * curves[i][j]);
+                qDebug() << toRotate.data[0][0]
+                        << toRotate.data[0][1]
+                        << toRotate.data[1][0]
+                        << toRotate.data[1][1]
+                        << curves[i][j].x()
+                        << curves[i][j].y()
+                        << curves[i].size();
+
+            }
+>>>>>>> origin/master
             for(int j = 0; j <= curves[i].size() - 1; j++) { // count differential vector
                 if(j == 0)
                     m.push_back((curves[i][j+1] - curves[i][j]) / (curves[i][j+1].x() - curves[i][j].x()));
@@ -100,7 +122,7 @@ void Curve::paintEvent(QPaintEvent*) {
                     m.push_back((curves[i][j+1] - curves[i][j-1]) / (curves[i][j+1].x() - curves[i][j-1].x()));
 
             }
-            for(int j = 0; j < curves[i].size() - 1; j++) { // draw curve
+          /*  for(int j = 0; j < curves[i].size() - 1; j++) { // draw curve
                 double step = 0.05;
                 QPointF prev, next;
                 prev.setX(curves[i][j].x());
@@ -108,6 +130,7 @@ void Curve::paintEvent(QPaintEvent*) {
                // toDraw.push_back(curves[i][j]);
                 if(curves[i][j].x() < curves[i][j+1].x())
                     for(double x = curves[i][j].x(); x < curves[i][j+1].x() + step; x+=step) {
+<<<<<<< HEAD
                         toDraw.push_back(splain(x, curves[i][j], curves[i][j+1], m[j], m[j+1]));
                         //next = splain(x, curves[i][j], curves[i][j+1], m[j], m[j+1]);
                         //painter.drawLine(prev, next);
@@ -133,6 +156,21 @@ void Curve::paintEvent(QPaintEvent*) {
                 for(int i = 0; i < toDraw.size() - 1; i++) {
                     painter.drawLine(toDraw[i], toDraw[i+1]);
                 }
+=======
+                        next = splain(x, curves[i][j], curves[i][j+1], m[j], m[j+1]);
+                        painter.drawLine(prev, next);
+                        painter.drawLine(toRotate * prev, toRotate * next);
+                        prev = next;
+                    }
+                else {
+                    for(double x = curves[i][j].x(); x > curves[i][j+1].x() - step; x-=step) {
+                        next = splain(x, curves[i][j], curves[i][j+1], m[j], m[j+1]);
+                        painter.drawLine(prev, next);
+                        prev = next;
+                    }
+                }
+            } */
+>>>>>>> origin/master
 
             }
             toDraw.clear();
@@ -229,5 +267,12 @@ void Curve::on_cycleBox_toggled(bool checked) {
 
 void Curve::on_angleChange_valueChanged(int value) {
     alpha = (double)value * pi / 180;
+    repaint();
+}
+
+void Curve::on_cycleBox_toggled(bool checked) {
+    if (checked)
+        cycle = true;
+    else cycle = false;
     repaint();
 }

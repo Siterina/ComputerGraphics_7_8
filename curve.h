@@ -28,13 +28,19 @@ public:
     int segments;
     QStack <QVector <QPointF> > curves;
     QVector <QPointF> temp;
+<<<<<<< HEAD
     QVector <QPointF> toDraw;
+=======
+>>>>>>> origin/master
     QVector <QPointF> m;
     bool drawCurve;
     int h, w;
     bool cycle;
     double alpha;
+<<<<<<< HEAD
     int max_x, max_y, min_x, min_y;
+=======
+>>>>>>> origin/master
 
 private:
     Ui::Curve *ui;
@@ -53,7 +59,10 @@ private slots:
     void on_delete_last_clicked();
     void on_delete_all_clicked();
     void on_cycleBox_toggled(bool checked);
+<<<<<<< HEAD
     void on_angleChange_valueChanged(int value);
+=======
+>>>>>>> origin/master
 };
 
 #endif // CURVE_H
