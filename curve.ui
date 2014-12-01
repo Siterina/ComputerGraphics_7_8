@@ -29,6 +29,23 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="8" column="1">
+      <widget class="QSpinBox" name="pointToSetTension">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>11</number>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>point</string>
+       </property>
+      </widget>
+     </item>
      <item row="6" column="1">
       <widget class="QPushButton" name="delete_all">
        <property name="text">
@@ -148,7 +165,67 @@
        </property>
       </widget>
      </item>
-     <item row="8" column="1">
+     <item row="13" column="1">
+      <widget class="QPushButton" name="exit">
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="QPushButton" name="changeTension">
+       <property name="text">
+        <string>Change</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="QDoubleSpinBox" name="setTensionX">
+       <property name="minimum">
+        <double>-10.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>10.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.020000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>tensionX</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="QDoubleSpinBox" name="setTensionY">
+       <property name="minimum">
+        <double>-10.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>10.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.020000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>tensionY</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0">
       <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -160,13 +237,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="9" column="1">
-      <widget class="QPushButton" name="exit">
-       <property name="text">
-        <string>Exit</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
